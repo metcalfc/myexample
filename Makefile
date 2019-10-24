@@ -9,7 +9,7 @@ ifeq ($(UNAME_S),Darwin)
 	OS = darwin
 endif
 
-all: help
+all: build
 
 run: ## Just run it
 	go run main.go
