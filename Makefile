@@ -29,7 +29,7 @@ image: ## Build local snapshot as an image
 # The actual release is done via a GitHub action that
 # triggers on a new version tag.
 release: ## Release to GitHub
-	git diff-index --quiet HEAD -- || echo "Git has changes not releaseing." && false
+	git diff-index --quiet HEAD -- || (echo "Git has changes not releaseing." && false)
 	git tag -a $(VERSION) -m "Release" || true
 	git push origin $(VERSION)
 
