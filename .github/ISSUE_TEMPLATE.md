@@ -14,7 +14,7 @@
 
 
 
-* **If the current behavior is a bug, please provide the steps to reproduce and if possible a minimal demo of the problem**. 
+* **If the current behavior is a bug, please provide the steps to reproduce and if possible a minimal demo of the problem**.
 
 
 
@@ -27,7 +27,7 @@
 
 
 * **Please tell us about your environment:**
-  
+
   - Version: 0.1.0
   - Operating System:
 
