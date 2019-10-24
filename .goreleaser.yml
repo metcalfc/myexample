@@ -4,6 +4,7 @@ project_name: myexample
 before:
   hooks:
     - go mod download
+    - go mod verify
 builds:
   - env:
       - GO111MODULE=on
@@ -23,7 +24,8 @@ archives:
       - goos: windows
         format: zip
 dockers:
-  - image_templates:
+  - dockerfile: Dockerfile.scratch
+    image_templates:
       - "metcalfc/myexample:{{ .Tag }}"
       - "metcalfc/myexample:v{{ .Major }}"
       - "metcalfc/myexample:v{{ .Major }}.{{ .Minor }}"
@@ -35,6 +37,8 @@ dockers:
       - "--label=org.label-schema.vcs-ref={{ .FullCommit}}"
       - "--label=org.label-schema.vcs-url={{ .GitURL}}"
       - "--label=org.label-schema.build-date={{ .Date}}"
+    binaries:
+    - myexample
 checksum:
   name_template: "checksums.txt"
 changelog:
