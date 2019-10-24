@@ -16,6 +16,8 @@ RUN apt-get update \
     && apt-get -y install git procps lsb-release \
     #
     # Create a non-root user to use if preferred - see https://aka.ms/vscode-remote/containers/non-root-user.
+    # This is meant to be an interactive shell so it should be a full user, with a
+    # home, sudo, etc vs only an entry in /etc/passwd.
     && groupadd --gid $USER_GID $USERNAME \
     && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME \
     # [Optional] Add sudo support
