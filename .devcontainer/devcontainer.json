@@ -2,6 +2,8 @@
 	"name": "Go",
 	"dockerFile": "Dockerfile",
 
+	"appPort": 8080,
+
 	"runArgs": [
 		// Uncomment the next line to run as root instead. Linux users,
 		// update Dockerfile with your user's UID/GID if not 1000 when

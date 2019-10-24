@@ -1,24 +1,23 @@
-// main_test.go
+// health_test.go
 package main
 
 import (
-	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 )
 
-func TestRootHandler(t *testing.T) {
+func TestHealthCheckHandler(t *testing.T) {
 	// Create a request to pass to our handler. We don't have any query parameters for now, so we'll
 	// pass 'nil' as the third parameter.
-	req, err := http.NewRequest("GET", "/", nil)
+	req, err := http.NewRequest("GET", "/health", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	// We create a ResponseRecorder (which satisfies http.ResponseWriter) to record the response.
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(rootHandler)
+	handler := http.HandlerFunc(healthCheckHandler)
 
 	// Our handlers satisfy http.Handler, so we can call their ServeHTTP method
 	// directly and pass in our Request and ResponseRecorder.
@@ -30,16 +29,10 @@ func TestRootHandler(t *testing.T) {
 			status, http.StatusOK)
 	}
 
-	// Convert the JSON response to a map
-	var response map[string]string
-	err = json.Unmarshal([]byte(rr.Body.String()), &response)
-
-	// Grab the value & whether or not it exists
-	value, _ := response["hello"]
-
 	// Check the response body is what we expect.
-	if value != "world" {
-		t.Errorf("handler returned unexpected body: got %v",
-			rr.Body.String())
+	expected := `{"alive": true}`
+	if rr.Body.String() != expected {
+		t.Errorf("handler returned unexpected body: got %v want %v",
+			rr.Body.String(), expected)
 	}
 }
