@@ -33,6 +33,11 @@ release: ## Release to GitHub
 	git tag -a $(VERSION) -m "Release" || true
 	git push origin $(VERSION)
 
+clean: ## Clean up build artifacts
+	docker images -aq ${IMAGE_NAME} | xargs docker rmi --force || true
+	rm -rf myexample || true
+	rm -rf dist || true
+
 help: ## Show this help message
 	@echo 'usage: make [target] ...'
 	@echo
