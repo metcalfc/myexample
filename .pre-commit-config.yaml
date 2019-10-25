@@ -11,6 +11,7 @@ repos:
     - id: go-fmt
     - id: go-vet
     - id: go-lint
+    - id: golangci-lint
     - id: go-imports
     - id: go-unit-tests
     - id: go-build
