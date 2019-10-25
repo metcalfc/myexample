@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# How to update the template from this repository
+# cd ~/src/golang-template/services/golang
+# rm -rf assets
+# cp -r ~/src/myexample ./assets
+# cd ./assets
+# rm -rf .git
+# ./hack/generate-template.sh
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ROOT_DIR=${DIR}/..
 
