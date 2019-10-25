@@ -9,14 +9,14 @@ then
     exit
 fi
 
-cd ${ROOT_DIR}
+cd "${ROOT_DIR}" || (echo "Can't cd to ${ROOT_DIR}" && exit)
 
 echo "Checking for hardcoded names"
 echo
 
 grep -r myexample . | grep -v hack
 
-PRE_COUNT=$(grep -r myexample . | grep -v hack | wc -l |xargs)
+PRE_COUNT=$(grep -r myexample . | grep -v -c hack)
 
 find . \( -type d -name .git -prune \) -or \( -type d -name hack -prune \) -o -type f -exec \
     sed -i ''  -e "s#github.com/metcalfc/myexample#github.com/{{GITHUB_ORG}}/myexample#g" {} \;
@@ -29,12 +29,12 @@ echo
 echo "Checking for now templated names"
 echo
 grep -r "{{PROJECT}}" . | grep -v hack
-POST_COUNT=$(grep -r {{PROJECT}} . | grep -v hack | wc -l | xargs)
+POST_COUNT=$(grep -r '{{PROJECT}}' . | grep -v -c hack)
 
 echo
 echo "Pre: ${PRE_COUNT} Post: ${POST_COUNT}"
 
 if [[ "${PRE_COUNT}" == "${POST_COUNT}" ]]; then
     echo "Self destruct hack dir"
-    rm -rf $ROOT_DIR/hack
+    rm -rf "${ROOT_DIR}/hack"
 fi
