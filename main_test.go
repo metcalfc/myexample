@@ -32,10 +32,13 @@ func TestRootHandler(t *testing.T) {
 
 	// Convert the JSON response to a map
 	var response map[string]string
-	err = json.Unmarshal([]byte(rr.Body.String()), &response)
+	err = json.Unmarshal(rr.Body.Bytes(), &response)
+	if err != nil {
+		t.Errorf("couldn't unmarshal the json: %v", err)
+	}
 
 	// Grab the value & whether or not it exists
-	value, _ := response["hello"]
+	value := response["hello"]
 
 	// Check the response body is what we expect.
 	if value != "world" {

@@ -20,11 +20,6 @@ var (
 	date    = "unknown"
 )
 
-func init() {
-	log.SetPrefix("LOG: ")
-	log.SetFlags(log.Ldate | log.Lmicroseconds | log.Lshortfile)
-}
-
 func loggingMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Do stuff here
@@ -41,7 +36,10 @@ func healthCheckHandler(w http.ResponseWriter, r *http.Request) {
 
 	// In the future we could report back on the status of our DB, or our cache
 	// (e.g. Redis) by performing a simple PING, and include them in the response.
-	io.WriteString(w, `{"alive": true}`)
+
+	if _, err := io.WriteString(w, `{"alive": true}`); err != nil {
+		log.Println(err)
+	}
 }
 
 // Hello world struct
@@ -65,14 +63,18 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	b, _ := json.Marshal(h)
 
-	io.WriteString(w, string(b))
+	if _, err := io.WriteString(w, string(b)); err != nil {
+		log.Println(err)
+	}
 }
 
 func main() {
-
 	var wait time.Duration
-	flag.DurationVar(&wait, "graceful-timeout", time.Second*15, "the duration for which the server gracefully wait for existing connections to finish - e.g. 15s or 1m")
+	flag.DurationVar(&wait, "graceful-timeout", time.Second*15, "graceful exit timeout- e.g. 15s or 1m")
 	flag.Parse()
+
+	log.SetPrefix("LOG: ")
+	log.SetFlags(log.Ldate | log.Lmicroseconds | log.Lshortfile)
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", rootHandler)
@@ -109,10 +111,12 @@ func main() {
 	defer cancel()
 	// Doesn't block if no connections, but will otherwise wait
 	// until the timeout deadline.
-	srv.Shutdown(ctx)
+	if err := srv.Shutdown(ctx); err != nil {
+		log.Println(err)
+	}
+
 	// Optionally, you could run srv.Shutdown in a goroutine and block on
 	// <-ctx.Done() if your application should wait for other services
 	// to finalize based on context cancellation.
 	log.Println("shutting down")
-	os.Exit(0)
 }
