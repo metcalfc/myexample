@@ -9,13 +9,6 @@ ifeq ($(UNAME_S),Darwin)
 	OS = darwin
 endif
 
-# Don't check for precommit hooks in the Github Action
-ifndef $(GITHUB_WORKFLOW)
-ifeq (, $(shell which pre-commit))
- 	$(error "No pre-commit in path, consider pip install pre-commit or brew install pre-commit")
-endif
-endif
-
 all: build
 
 run: ## Just run it
@@ -34,7 +27,8 @@ image: ## Build local snapshot as an image
 	docker build -t ${IMAGE_NAME} .
 
 setup: ## Setup the precommit hook
-	pre-commit install
+	@which pre-commit > /dev/null 2>&1 || (echo "pre-commit not installed see README." && false)
+	@pre-commit install
 
 # The actual release is done via a GitHub action that
 # triggers on a new version tag.
