@@ -9,6 +9,10 @@ ifeq ($(UNAME_S),Darwin)
 	OS = darwin
 endif
 
+ifeq (, $(shell which pre-commit))
+ $(error "No pre-commit in path, consider pip install pre-commit or brew install pre-commit")
+ endif
+
 all: build
 
 run: ## Just run it
@@ -25,6 +29,9 @@ fmt: ## Format go files
 
 image: ## Build local snapshot as an image
 	docker build -t ${IMAGE_NAME} .
+
+setup: ## Setup the precommit hook
+	pre-commit install
 
 # The actual release is done via a GitHub action that
 # triggers on a new version tag.
