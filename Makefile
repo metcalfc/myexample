@@ -9,9 +9,12 @@ ifeq ($(UNAME_S),Darwin)
 	OS = darwin
 endif
 
+# Don't check for precommit hooks in the Github Action
+ifndef $(GITHUB_WORKFLOW)
 ifeq (, $(shell which pre-commit))
- $(error "No pre-commit in path, consider pip install pre-commit or brew install pre-commit")
- endif
+ 	$(error "No pre-commit in path, consider pip install pre-commit or brew install pre-commit")
+endif
+endif
 
 all: build
 
