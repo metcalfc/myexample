@@ -24,7 +24,7 @@ fmt: ## Format go files
 	go fmt ./... -v
 
 image: ## Build local snapshot as an image
-	docker build -t ${IMAGE_NAME} .
+	docker buildx build -t ${IMAGE_NAME} .
 
 setup: ## Setup the precommit hook
 	@which pre-commit > /dev/null 2>&1 || (echo "pre-commit not installed see README." && false)
