@@ -2,9 +2,9 @@
 
 > Demo app demonstrating how to use Docker Templates and GitHub actions to implement a CI Pipeline for a Go based REST API service.
 
-![](https://github.com/metcalfc/myexample/workflows/Test/badge.svg)
+![Test workflow](https://github.com/metcalfc/myexample/workflows/Test/badge.svg)
 
-![](https://github.com/metcalfc/myexample/workflows/Release/badge.svg)
+![Release workflow](https://github.com/metcalfc/myexample/workflows/Release/badge.svg)
 
 ## Features
 
@@ -26,3 +26,10 @@
   * Remote container works out of the box for that F5 experience without local toolchains
   * Service launch configuration
   * Extensions pre loaded
+
+## Setup
+
+* [Install pre-commit tool (via pip or brew)](https://pre-commit.com)
+* Run `make setup` to install the pre commit hooks
+* [Install Docker Desktop](https://www.docker.com/products/docker-desktop)
+* [Install VS Code](https://code.visualstudio.com/download)
