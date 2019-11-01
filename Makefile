@@ -1,4 +1,6 @@
 VERSION         :=      $(shell cat ./VERSION)
+COMMIT          :=      $(shell git rev-parse --short HEAD)
+DATE            :=      $(shell date +%Y-%m-%dT%H:%M:%S%z)
 IMAGE_NAME      :=      metcalfc/myexample
 
 UNAME_S := $(shell uname -s)
@@ -15,7 +17,7 @@ run: ## Just run it
 	go run main.go
 
 build: ## Build local static binary
-	GOOS=${OS} GOARCH=amd64 go build -ldflags="-w -s"
+	GOOS=${OS} GOARCH=amd64 go build -ldflags="-w -s -X main.date=${DATE} -X main.commit=${COMMIT}"
 
 test: ## Run tests
 	go test ./... -v
